@@ -9,7 +9,14 @@ export default {
         './error.vue'
     ],
     theme: {
-        extend: {}
+        colors: {
+            primary: '#7595C3',
+            white: '#FEFEFE'
+        },
+        fontFamily: {
+            display: 'OtomanopeeOne, sans-serif',
+            body: 'Outfit, sans-serif'
+        }
     },
     plugins: []
 }
