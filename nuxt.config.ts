@@ -13,7 +13,7 @@ export default defineNuxtConfig({
             autoprefixer: {}
         }
     },
-    modules: ['@nuxtjs/eslint-module', 'nuxt-svgo', '@nuxtjs/google-fonts'],
+    modules: ['@nuxtjs/eslint-module', '@nuxtjs/google-fonts'],
     googleFonts: {
         families: {
             Outfit: true
