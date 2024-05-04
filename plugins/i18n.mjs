@@ -1,25 +1,25 @@
 import { createI18n } from 'vue-i18n'
 
-export default defineNuxtPlugin(({ vueApp }) => {
+import { messages } from '~/i18n/index.mjs'
+
+export default defineNuxtPlugin((nuxtApp) => {
+    const route = useRoute()
+    let locale = route.query.lang
+    if (!(locale in messages)) {
+        locale = 'pt-BR'
+    }
+
     const i18n = createI18n({
         legacy: false,
         globalInjection: true,
-        locale: 'pt',
-        messages: {
-            en: {
-                home: {
-                    guess_the_movie: `Guess today's Disney movie`,
-                    choose_anyone: 'Choose anyone to get started'
-                }
-            },
-            pt: {
-                home: {
-                    guess_the_movie: 'Adivinhe o filme da Disney de hoje',
-                    choose_anyone: 'Escolha qualquer um para começar'
-                }
-            }
-        }
+        locale,
+        messages
     })
 
-    vueApp.use(i18n)
+    nuxtApp.vueApp.use(i18n)
+    return {
+        provide: {
+            i18n
+        }
+    }
 })
