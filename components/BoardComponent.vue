@@ -1,7 +1,7 @@
 <template>
-    <div class="relative">
+    <div class="relative w-11/12 sm:w-9/12 max-w-[550px] text-center">
         <div
-            class="board-text absolute w-full h-full flex justify-center items-center font-display"
+            class="text-shadow absolute w-full h-full flex justify-center items-center font-display px-5"
         >
             <div>
                 <slot></slot>
@@ -20,9 +20,3 @@
 </template>
 
 <script setup></script>
-
-<style scoped>
-.board-text {
-    text-shadow: 0px 2px 3px #00000076;
-}
-</style>

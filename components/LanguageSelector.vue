@@ -1,5 +1,5 @@
 <template>
-    <DropDown v-model="showDrop">
+    <DropDown v-model="showDrop" overlay menu-class="right-0 md:right-auto">
         <template #activator>
             <button class="rounded bg-primary p-0.5">
                 <img

@@ -8,3 +8,7 @@
         src: url('/fonts/OtomanopeeOne-Regular.woff');
     }
 }
+
+.text-shadow {
+    text-shadow: 0px 2px 3px #00000076;
+}
