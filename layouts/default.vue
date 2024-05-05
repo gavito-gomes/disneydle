@@ -1,14 +1,14 @@
 <template>
-    <div class="background text-body text-white">
+    <div
+        class="font-body text-white w-screen h-screen overflow-x-hidden overflow-y-auto"
+    >
+        <div class="background fixed w-screen h-screen -z-50 top-0 left-0" />
         <slot></slot>
     </div>
 </template>
 
 <style>
 .background {
-    height: 100%;
-    width: 100%;
-    position: absolute;
     background-image: url('/img/background.png');
     background-position: center;
     background-size: cover;

@@ -6,9 +6,10 @@
         <div v-if="model">
             <div
                 class="fixed top-0 left-0 z-10 w-screen h-screen"
+                :class="{ 'bg-opdarken': overlay }"
                 @click="model = false"
             />
-            <div class="absolute z-10">
+            <div class="absolute z-20" :class="props.menuClass">
                 <slot />
             </div>
         </div>
@@ -17,4 +18,11 @@
 
 <script setup>
 const model = defineModel({ type: Boolean, required: true })
+const props = defineProps({
+    menuClass: {
+        type: String,
+        default: ''
+    },
+    overlay: Boolean
+})
 </script>

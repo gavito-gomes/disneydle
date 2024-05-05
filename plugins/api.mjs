@@ -1,16 +1,15 @@
 import axios from 'axios'
-export default defineNuxtPlugin(() => {
-    const defaultUrl = '<https://localhost:3000>'
 
+export default defineNuxtPlugin(() => {
+    const config = useRuntimeConfig()
+
+    axios.defaults.baseURL = config.public.apiUrl + '/disney-api'
     let api = axios.create({
-        baseUrl: defaultUrl,
-        headers: {
-            common: {}
-        }
+        timeout: 10000
     })
     return {
         provide: {
-            api: api
+            api
         }
     }
 })
