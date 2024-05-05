@@ -22,10 +22,13 @@
                 @click="menuActive = false"
             />
             <div class="absolute z-20 left-0 top-1/2 w-full">
-                <div v-if="movies.length">
-                    <div class="mt-5 w-11/12 mx-auto bg-primary p-1">
+                <div class="mt-5 w-11/12 mx-auto bg-primary p-1">
+                    <div v-if="menuLoading">
+                        <LoadingSVG width="50" height="40" class="mx-auto" />
+                    </div>
+                    <div v-else-if="movies.length">
                         <button
-                            v-for="(item, i) in movies"
+                            v-for="(item, i) in moviesList"
                             :key="i"
                             class="w-full p-1 hover:bg-opdarken text-left flex items-center"
                             :class="{
@@ -42,9 +45,7 @@
                             <span class="ml-2">{{ item.name }}</span>
                         </button>
                     </div>
-                </div>
-                <div v-else-if="text.length >= 3">
-                    <div class="mt-5 w-11/12 mx-auto bg-primary p-1">
+                    <div v-else>
                         <p class="p-2">{{ $t('home.movie_not_found') }}</p>
                     </div>
                 </div>
@@ -54,15 +55,24 @@
 </template>
 
 <script setup>
+const config = useRuntimeConfig()
 const { $api, $debounce } = useNuxtApp()
 const emit = defineEmits(['submit'])
+
 const model = defineModel({ type: String, required: true })
 
 const menuActive = ref(false)
+const menuLoading = ref(false)
 const text = ref('')
 const movies = ref([])
-
 const focusedMovie = ref(0)
+
+const moviesList = computed(() =>
+    movies.value.map((movie) => ({
+        ...movie,
+        cover_image: `${config.public.apiUrl}/${movie.cover_image}`
+    }))
+)
 
 function setFocusedMovie(id) {
     if (id < 0) focusedMovie.value = 0
@@ -101,7 +111,10 @@ function submitMovieId() {
     menuActive.value = false
 }
 
-const search = () =>
+const search = () => {
+    menuActive.value = true
+    menuLoading.value = true
+
     $debounce(async () => {
         try {
             const route = useRoute()
@@ -112,9 +125,10 @@ const search = () =>
                 }
             })
             movies.value = data.movies
-            menuActive.value = true
+            menuLoading.value = false
         } catch (error) {
             console.log(error)
         }
     }, 500)
+}
 </script>
