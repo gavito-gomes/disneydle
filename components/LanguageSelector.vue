@@ -36,8 +36,8 @@ const selectedLang = computed(() =>
 )
 
 async function setLang(lang) {
-    $i18n.global.locale.value = lang
     await router.push({ query: { lang } })
+    $i18n.global.locale.value = lang
     showDrop.value = false
     // router.go()
 }
