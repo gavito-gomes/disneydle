@@ -56,7 +56,7 @@
 
 <script setup>
 const config = useRuntimeConfig()
-const { $api, $debounce } = useNuxtApp()
+const { $api, $debounce, $storage } = useNuxtApp()
 const emit = defineEmits(['submit'])
 
 const model = defineModel({ type: String, required: true })
@@ -117,6 +117,8 @@ const search = () => {
 
     $debounce(async () => {
         try {
+            const guessIds =
+                $storage.getItem('guessList')?.map((guess) => guess.id) || []
             const route = useRoute()
             const { data } = await $api.get('/movies/autocomplete', {
                 params: {
@@ -124,7 +126,9 @@ const search = () => {
                     lang: route.query.lang.split('-')[0]
                 }
             })
-            movies.value = data.movies
+            movies.value = data.movies.filter(
+                (movie) => !guessIds.includes(movie._id)
+            )
             menuLoading.value = false
         } catch (error) {
             console.log(error)

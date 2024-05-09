@@ -1,5 +1,5 @@
 <template>
-    <div :key="key" class="my-20">
+    <div :key="updatePageKey" class="my-10 md:my-20">
         <div class="flex justify-center items-center">
             <div class="w-7"></div>
             <img src="/img/logo.png" class="w-8/12 sm:max-w-[350px]" />
@@ -7,18 +7,16 @@
         </div>
 
         <div class="flex flex-col items-center justify-center mt-4">
-            <BoardComponent>
-                <p class="sm:text-lg md:text-xl">
+            <BoardComponent class="w-11/12 max-w-[550px]">
+                <p class="md:text-xl font-display">
                     {{ $t('home.guess_the_movie') }}
                 </p>
-                <p class="text-sm mt-1 sm:text-base md:mt-3">
+                <p class="text-sm mt-3 mb-2 sm:text-base">
                     {{ $t('home.choose_anyone') }}
                 </p>
             </BoardComponent>
             <AutocompleteMovie v-model="movie" @submit="guessMovie" />
-            <div>
-                <p v-for="(item, i) in list" :key="i">{{ item }}</p>
-            </div>
+            <GuessList :key="guessUpdateKey" />
         </div>
 
         <div class="flex flex-col items-center text-shadow mt-4">
@@ -28,17 +26,39 @@
 </template>
 
 <script setup>
+const { $api, $storage } = useNuxtApp()
+
 const movie = ref('')
-const key = ref(0)
+const updatePageKey = ref(0)
+const guessUpdateKey = ref(0)
 
-const list = ref([])
+async function guessMovie() {
+    try {
+        // console.log('guess movie: ', movie.value)
+        const {
+            data: { result }
+        } = await $api.get('/movies/guess', {
+            params: {
+                movieId: movie.value
+            }
+        })
+        addGuess(movie.value, result)
+        guessUpdateKey.value++
+    } catch (error) {
+        console.log(error)
+    }
+}
 
-function guessMovie() {
-    console.log('guess movie: ', movie.value)
-    list.value.push(movie.value)
+async function addGuess(id, guess) {
+    const list = $storage.getItem('guessList') || []
+    const exists = list.find((movie) => movie.id === id)
+    if (!exists) {
+        guess.id = id
+        $storage.setItem('guessList', [guess, ...list])
+    }
 }
 
 watch(useNuxtApp().$i18n.global.locale, () => {
-    key.value++
+    updatePageKey.value++
 })
 </script>

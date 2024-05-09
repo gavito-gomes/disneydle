@@ -21,7 +21,10 @@ export default {
                     light: '#C1D1EB'
                 },
                 white: '#FEFEFE',
-                opdarken: '#00000033'
+                opdarken: '#00000033',
+                green: '#398E3C',
+                yellow: '#C2931B',
+                red: '#C32D23'
             }
         }
     },

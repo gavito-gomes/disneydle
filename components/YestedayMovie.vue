@@ -1,9 +1,9 @@
 <template>
     <div v-if="yesterdayMovie" class="text-center mt-10">
-        <p class="text-lg">
+        <p class="">
             {{ $t('home.yesterday_movie') }}
         </p>
-        <p class="text-xl text-primary-light font-display">
+        <p class="text-lg text-primary-light font-display">
             - {{ yesterdayMovie.name }} -
         </p>
         <p class="mt-10">{{ $t('home.time_remaining') }} {{ nextMovieTime }}</p>
