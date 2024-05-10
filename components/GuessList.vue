@@ -20,11 +20,13 @@
                             <div
                                 :width="header.width"
                                 class="box-border border h-[65px] border-primary my-1 overflow-hidden text-sm"
-                                :class="[getBg(guess[header.field].status)]"
+                                :class="[
+                                    getBg(guess[header.field][lang].status)
+                                ]"
                             >
                                 <div v-if="j === 0">
                                     <img
-                                        :src="guess[header.field].value"
+                                        :src="`${baseUrl}/${guess[header.field][lang]}`"
                                         class="h-[65px] w-[120px]"
                                     />
                                 </div>
@@ -33,7 +35,7 @@
                                     class="h-full flex justify-center items-center p-0.5 text-sm"
                                 >
                                     <p class="text-center">
-                                        {{ guess[header.field].value }}
+                                        {{ guess[header.field][lang].value }}
                                     </p>
                                 </div>
                             </div>
@@ -47,21 +49,16 @@
 
 <script setup>
 const config = useRuntimeConfig()
-const { $storage } = useNuxtApp()
+const { $storage, $locale } = useNuxtApp()
 
-const list = computed(() => {
-    // return $storage.getItem('guessList') || []
-    return []
+const lang = $locale.get()
+const baseUrl = config.public.apiUrl
+
+const guessList = ref([])
+
+onMounted(() => {
+    guessList.value = $storage.getItem('guessList') || []
 })
-
-const guessList = computed(() =>
-    list.value.map((guess) => ({
-        ...guess,
-        cover_image: {
-            value: `${config.public.apiUrl}/${guess.cover_image}`
-        }
-    }))
-)
 
 const headers = [
     {

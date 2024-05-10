@@ -23,7 +23,14 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.use(i18n)
     return {
         provide: {
-            i18n
+            locale: {
+                get() {
+                    return i18n.global.locale
+                },
+                set(lang) {
+                    i18n.global.locale.value = lang
+                }
+            }
         }
     }
 })

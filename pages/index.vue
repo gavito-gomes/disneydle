@@ -34,15 +34,12 @@ const guessUpdateKey = ref(0)
 
 async function guessMovie() {
     try {
-        // console.log('guess movie: ', movie.value)
         const {
             data: { result }
-        } = await $api.get('/movies/guess', {
-            params: {
-                movieId: movie.value
-            }
+        } = await $api.post('/movies/guess', {
+            movieIds: [movie.value]
         })
-        addGuess(movie.value, result)
+        addGuess(movie.value, result[0])
         guessUpdateKey.value++
     } catch (error) {
         console.log(error)
@@ -58,7 +55,7 @@ async function addGuess(id, guess) {
     }
 }
 
-watch(useNuxtApp().$i18n.global.locale, () => {
+watch(useNuxtApp().$locale.get(), () => {
     updatePageKey.value++
 })
 </script>

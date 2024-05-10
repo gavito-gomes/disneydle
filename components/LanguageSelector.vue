@@ -25,19 +25,18 @@
 
 <script setup>
 import { languages } from '~/i18n'
-const { $i18n } = useNuxtApp()
+const { $locale } = useNuxtApp()
 const router = useRouter()
 
 const showDrop = ref(false)
 
-const currLang = computed(() => $i18n.global.locale.value)
 const selectedLang = computed(() =>
-    languages.find((lang) => lang.value === currLang.value)
+    languages.find((lang) => lang.value === $locale.get().value)
 )
 
 async function setLang(lang) {
     await router.push({ query: { lang } })
-    $i18n.global.locale.value = lang
+    $locale.set(lang)
     showDrop.value = false
     // router.go()
 }

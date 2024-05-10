@@ -4,15 +4,16 @@
             {{ $t('home.yesterday_movie') }}
         </p>
         <p class="text-lg text-primary-light font-display">
-            - {{ yesterdayMovie.name }} -
+            - {{ yesterdayMovie.name[lang] }} -
         </p>
         <p class="mt-10">{{ $t('home.time_remaining') }} {{ nextMovieTime }}</p>
     </div>
 </template>
 
 <script setup>
-const { $api } = useNuxtApp()
+const { $api, $locale } = useNuxtApp()
 
+const lang = $locale.get().value
 const yesterdayMovie = ref(null)
 const remainingTime = ref(null)
 const interval = ref(null)
@@ -40,7 +41,7 @@ async function getYesterdayMovie() {
     try {
         const { data } = await $api.get('/movies/yesterday', {
             params: {
-                lang: useRoute().query.lang.split('-')[0]
+                lang: useRoute().query.lang
             }
         })
         yesterdayMovie.value = data.movie

@@ -123,7 +123,7 @@ const search = () => {
             const { data } = await $api.get('/movies/autocomplete', {
                 params: {
                     text: text.value,
-                    lang: route.query.lang.split('-')[0]
+                    lang: route.query.lang
                 }
             })
             movies.value = data.movies.filter(
