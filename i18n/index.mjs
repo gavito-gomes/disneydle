@@ -4,12 +4,12 @@ import pt from '~/i18n/pt'
 const config = {
     'en-US': {
         name: 'English (US)',
-        icon: '/img/flags/us.svg',
+        icon: 'us',
         messages: en
     },
     'pt-BR': {
         name: 'Português (BR)',
-        icon: '/img/flags/br.svg',
+        icon: 'br',
         messages: pt
     }
 }
@@ -25,7 +25,7 @@ export const messages = Object.entries(config).reduce(
 export const languages = Object.entries(config).map(([key, config]) => {
     return {
         name: config.name,
-        image: config.icon,
+        icon: config.icon,
         value: key
     }
 })

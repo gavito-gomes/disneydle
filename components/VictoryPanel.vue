@@ -6,7 +6,11 @@
             {{ $t(`home.victory_panel.title.${titleLevel}`) }}
         </h2>
         <p class="mt-2">
-            {{ $t('home.victory_panel.you_guessed') }}
+            {{
+                $t(
+                    `home.victory_panel.${tries <= 1 ? 'first_try' : 'you_guessed'}`
+                )
+            }}
         </p>
 
         <ClientOnly>
@@ -49,7 +53,13 @@ const tries = computed(() => {
 })
 
 const titleLevel = computed(() => {
-    return tries.value <= 1 ? 'excellent' : tries.value <= 3 ? 'good' : 'ok'
+    return tries.value <= 1
+        ? 'wow'
+        : tries.value <= 3
+          ? 'excellent'
+          : tries.value <= 5
+            ? 'good'
+            : 'ok'
 })
 
 const correctGuess = computed(() => {

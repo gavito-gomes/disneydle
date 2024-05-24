@@ -1,14 +1,14 @@
 <template>
     <div :key="updatePageKey" class="my-10 md:my-20">
         <div class="flex justify-center items-center">
-            <div class="w-7"></div>
-            <img src="/img/logo.png" class="w-8/12 sm:max-w-[350px]" />
-            <LanguageSelector class="ml-3" />
+            <HowToPlay />
+            <img src="/img/logo.png" class="w-8/12 mx-3 sm:max-w-[350px]" />
+            <LanguageSelector />
         </div>
 
         <ClientOnly>
             <div class="flex flex-col items-center justify-center mt-4">
-                <BoardComponent class="w-11/12 max-w-[550px]">
+                <BoardComponent class="w-11/12 max-w-[550px] p-5 text-shadow">
                     <p class="md:text-xl font-display">
                         {{ $t('home.guess_the_movie') }}
                     </p>
@@ -54,20 +54,34 @@ const lastCheck = computed(() => {
     return $storage.getItem('lastCheck')
 })
 
-onBeforeMount(() => {
-    const reset =
-        !lastCheck.value || moment().format('YYYY-MM-DD') !== lastCheck.value
-    if (reset) {
-        $storage.setItem('guessedToday', false)
-        $storage.setItem('guessList', [])
-        $storage.setItem('lastCheck', moment().format('YYYY-MM-DD'))
-    }
+onBeforeMount(async () => {
+    await resetInfo()
 })
 
 onMounted(() => {
     guessedToday.value = $storage.getItem('guessedToday')
     scrollToVicory()
 })
+
+async function resetInfo() {
+    try {
+        const {
+            data: { serverTime }
+        } = await $api.get('/movies/timeRemaining')
+
+        const reset =
+            !lastCheck.value ||
+            !moment(serverTime).isSame(moment(lastCheck.value), 'day')
+        if (reset) {
+            $storage.setItem('guessedToday', false)
+            $storage.setItem('guessList', [])
+            $storage.setItem('lastCheck', serverTime)
+            updatePageKey.value++
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 function scrollToVicory() {
     nextTick(() => {

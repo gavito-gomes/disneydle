@@ -27,12 +27,12 @@ async function getTimeRemaining() {
         remainingTime.value = moment()
             .startOf('day')
             .add(remaining * 60, 'seconds')
-            .format('hh:mm:ss')
+            .format('HH:mm:ss')
 
         interval.value = setInterval(() => {
-            remainingTime.value = moment(remainingTime.value, 'hh:mm:ss')
+            remainingTime.value = moment(remainingTime.value, 'HH:mm:ss')
                 .subtract(1, 'second')
-                .format('hh:mm:ss')
+                .format('HH:mm:ss')
         }, 1000)
     } catch (error) {
         console.log(error)

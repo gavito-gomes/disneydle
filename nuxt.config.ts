@@ -18,7 +18,7 @@ export default defineNuxtConfig({
             autoprefixer: {}
         }
     },
-    modules: ['@nuxtjs/eslint-module', '@nuxtjs/google-fonts'],
+    modules: ['@nuxtjs/eslint-module', '@nuxtjs/google-fonts', 'nuxt-icon'],
     googleFonts: {
         families: {
             Outfit: true

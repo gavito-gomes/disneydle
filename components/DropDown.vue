@@ -9,7 +9,7 @@
                 :class="{ 'bg-opdarken': overlay }"
                 @click="model = false"
             />
-            <div class="absolute z-20" :class="props.menuClass">
+            <div class="absolute z-30" :class="props.menuClass">
                 <slot />
             </div>
         </div>

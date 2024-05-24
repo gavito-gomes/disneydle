@@ -1,10 +1,9 @@
 <template>
     <DropDown v-model="showDrop" overlay menu-class="right-0 md:right-auto">
         <template #activator>
-            <button class="rounded bg-primary p-0.5">
-                <img
-                    :src="selectedLang?.image || ''"
-                    class="w-7 border-opdarken border"
+            <button class="rounded bg-primary hover:bg-primary-op w-8">
+                <Icon
+                    :name="selectedLang ? `flag:${selectedLang.icon}-4x3` : ''"
                 />
             </button>
         </template>
@@ -15,7 +14,9 @@
                     class="flex w-[160px] p-2 hover:bg-opdarken"
                     @click="setLang(lang.value)"
                 >
-                    <img :src="lang.image" class="w-7 mr-2" />
+                    <div class="w-7 mr-2">
+                        <Icon :name="lang ? `flag:${lang.icon}-4x3` : ''" />
+                    </div>
                     <span>{{ lang.name }}</span>
                 </button>
             </li>
