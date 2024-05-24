@@ -8,12 +8,23 @@ export default {
         time_remaining: 'Next movie in: ',
         table_headers: {
             movie: 'Movie',
-            animation: 'Animation style',
+            animation: 'Animation Type',
             genre: 'Genres',
             main_characters: 'Main characters',
             location: 'Location',
-            box_office: 'World Box Office',
+            box_office: 'Worldwide Box Office',
             decade: 'Decade'
+        },
+        victory_panel: {
+            title: {
+                excellent: 'Excellent!',
+                good: 'Well done!',
+                ok: 'Congratulations!'
+            },
+            you_guessed: `You guessed today's movie`,
+            number_of_tries: 'Number of attempts:',
+            stats: 'Stats',
+            time_remaining: 'Next movie in'
         }
     }
 }

@@ -22,7 +22,12 @@ export default {
                 },
                 white: '#FEFEFE',
                 opdarken: '#00000033',
-                green: '#398E3C',
+                green: {
+                    DEFAULT: '#398E3C',
+                    op: '#29732cE5',
+                    light: '#66cc6a',
+                    dark: '#226127'
+                },
                 yellow: '#C2931B',
                 red: '#C32D23'
             }

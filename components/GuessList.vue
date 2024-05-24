@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-5 w-11/12 max-w-[700px] overflow-x-auto">
+    <div class="mt-5 w-11/12 max-w-[780px] overflow-x-auto">
         <div class="w-fit">
             <table class="border-separate border-spacing-1 w-fit table-fixed">
                 <thead>
@@ -68,7 +68,7 @@ const headers = [
     },
     {
         name: 'animation',
-        width: '70',
+        width: '90',
         field: 'animation_style'
     },
     {
@@ -79,16 +79,16 @@ const headers = [
     {
         name: 'main_characters',
         width: '120',
-        field: 'main_characters'
+        field: 'main_character_types'
     },
     {
         name: 'location',
-        width: '90',
+        width: '120',
         field: 'location'
     },
     {
         name: 'box_office',
-        width: '70',
+        width: '90',
         field: 'box_office'
     },
     {

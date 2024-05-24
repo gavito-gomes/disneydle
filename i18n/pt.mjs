@@ -14,6 +14,17 @@ export default {
             location: 'Local',
             box_office: 'Bilheteria Mundial',
             decade: 'Década'
+        },
+        victory_panel: {
+            title: {
+                excellent: 'Excelente!',
+                good: 'Muito bom!',
+                ok: 'Parabéns!'
+            },
+            you_guessed: 'Você acertou o filme de hoje',
+            number_of_tries: 'Número de tentativas:',
+            stats: 'Estatísticas',
+            time_remaining: 'Próximo filme em'
         }
     }
 }

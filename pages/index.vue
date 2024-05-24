@@ -6,18 +6,32 @@
             <LanguageSelector class="ml-3" />
         </div>
 
-        <div class="flex flex-col items-center justify-center mt-4">
-            <BoardComponent class="w-11/12 max-w-[550px]">
-                <p class="md:text-xl font-display">
-                    {{ $t('home.guess_the_movie') }}
-                </p>
-                <p class="text-sm mt-3 mb-2 sm:text-base">
-                    {{ $t('home.choose_anyone') }}
-                </p>
-            </BoardComponent>
-            <AutocompleteMovie v-model="movie" @submit="guessMovie" />
-            <GuessList :key="guessUpdateKey" />
-        </div>
+        <ClientOnly>
+            <div class="flex flex-col items-center justify-center mt-4">
+                <BoardComponent class="w-11/12 max-w-[550px]">
+                    <p class="md:text-xl font-display">
+                        {{ $t('home.guess_the_movie') }}
+                    </p>
+                    <p class="text-sm mt-3 mb-2 sm:text-base">
+                        {{ $t('home.choose_anyone') }}
+                    </p>
+                </BoardComponent>
+                <AutocompleteMovie
+                    v-if="!guessedToday"
+                    v-model="movie"
+                    @submit="guessMovie"
+                />
+
+                <div
+                    v-if="guessedToday"
+                    ref="scrollTo"
+                    class="w-11/12 max-w-[400px]"
+                >
+                    <VictoryPanel />
+                </div>
+                <GuessList :key="guessUpdateKey" />
+            </div>
+        </ClientOnly>
 
         <div class="flex flex-col items-center text-shadow mt-4">
             <YestedayMovie />
@@ -26,11 +40,46 @@
 </template>
 
 <script setup>
+import moment from 'moment'
 const { $api, $storage } = useNuxtApp()
 
+const scrollTo = ref(null)
 const movie = ref('')
 const updatePageKey = ref(0)
 const guessUpdateKey = ref(0)
+
+const guessedToday = ref(false)
+
+const lastCheck = computed(() => {
+    return $storage.getItem('lastCheck')
+})
+
+onBeforeMount(() => {
+    const reset =
+        !lastCheck.value || moment().format('YYYY-MM-DD') !== lastCheck.value
+    if (reset) {
+        $storage.setItem('guessedToday', false)
+        $storage.setItem('guessList', [])
+        $storage.setItem('lastCheck', moment().format('YYYY-MM-DD'))
+    }
+})
+
+onMounted(() => {
+    guessedToday.value = $storage.getItem('guessedToday')
+    scrollToVicory()
+})
+
+function scrollToVicory() {
+    nextTick(() => {
+        if (guessedToday.value) {
+            console.log(scrollTo.value)
+            scrollTo.value.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            })
+        }
+    })
+}
 
 async function guessMovie() {
     try {
@@ -52,6 +101,12 @@ async function addGuess(id, guess) {
     if (!exists) {
         guess.id = id
         $storage.setItem('guessList', [guess, ...list])
+    }
+
+    if (guess.correctGuess) {
+        $storage.setItem('guessedToday', true)
+        guessedToday.value = true
+        scrollToVicory()
     }
 }
 
