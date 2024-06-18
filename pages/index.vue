@@ -1,5 +1,6 @@
 <template>
     <div :key="updatePageKey" class="my-10 md:my-20">
+        <LoadingScreen :active="loading" />
         <div class="flex justify-center items-center">
             <HowToPlay />
             <img src="/img/logo.png" class="w-8/12 mx-3 sm:max-w-[350px]" />
@@ -47,6 +48,7 @@ const scrollTo = ref(null)
 const movie = ref('')
 const updatePageKey = ref(0)
 const guessUpdateKey = ref(0)
+const loading = ref(true)
 
 const guessedToday = ref(false)
 
@@ -54,13 +56,9 @@ const lastCheck = computed(() => {
     return $storage.getItem('lastCheck')
 })
 
-onBeforeMount(async () => {
+onMounted(async () => {
     await resetInfo()
-})
-
-onMounted(() => {
-    guessedToday.value = $storage.getItem('guessedToday')
-    scrollToVicory()
+    if (!guessedToday.value) scrollToVicory()
 })
 
 async function resetInfo() {
@@ -72,6 +70,7 @@ async function resetInfo() {
         const reset =
             !lastCheck.value ||
             !moment(serverTime).isSame(moment(lastCheck.value), 'day')
+        console.log(reset)
         if (reset) {
             $storage.setItem('guessedToday', false)
             $storage.setItem('guessList', [])
@@ -80,6 +79,8 @@ async function resetInfo() {
         }
     } catch (error) {
         console.log(error)
+    } finally {
+        loading.value = false
     }
 }
 

@@ -19,7 +19,7 @@
 
 <script setup>
 const model = defineModel({ type: Boolean, required: true })
-const props = defineProps({
+defineProps({
     persistent: Boolean,
     overlayColor: {
         type: String,
